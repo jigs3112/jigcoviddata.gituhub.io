@@ -233,7 +233,6 @@
                         'pageLength'
                     ],
                     rowCallback: function (row, data) {
-                        debugger;
                         if (data.available_capacity_dose1 > 0 || data.available_capacity_dose2 > 0) {
                             $(row).find('lable.lightgreen').closest('td').addClass('lightgreen');
                         }
