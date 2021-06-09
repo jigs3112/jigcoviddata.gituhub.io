@@ -206,8 +206,6 @@
                                 }
                             }, "data": "available_capacity_dose1"
                         },
-
-                        //{ "data": "available_capacity_dose1" },
                         {
                             "render": function (data, type, full, meta) {
                                 if (full.available_capacity_dose2 > 0) {
@@ -218,7 +216,6 @@
                                 }
                             }, "data": "available_capacity_dose2"
                         },
-                        //{ "data": "available_capacity_dose2" },
                         { "data": "date" },
                         { "data": "fee_type" },
                         { "data": "fee" }
@@ -241,4 +238,28 @@
             }
         });
     }
+
+    var message = "Strictly prevented";
+    document.onkeypress = function (event) {
+        event = (event || window.event);
+        if (event.keyCode == 123 || event.which == 3) {
+            return false;
+        }
+    }
+    document.onmousedown = function (event) {
+        event = (event || window.event);
+        if (event.keyCode == 123) {
+            return false;
+        }
+        if (navigator.appName == "Netscape" && (event.which == 3)) {
+            alert(message); return false;
+        }
+        if (navigator.appVersion.indexOf("MSIE") != -1 && event.button == 2) { alert(message); return false; }
+    }
+    document.onkeydown = function (event) {
+        event = (event || window.event);
+        if (event.keyCode == 123 || event.which == 3) {
+            return false;
+        }
+    }  
 </script>
