@@ -5,7 +5,8 @@
     <title>Index</title>
     <style type="text/css">
         body {
-            padding: 1em 3em;
+            padding: 1em 3em !important;
+            background-color: #e4f5f9 !important;
         }
 
         .dataTables_filter {
@@ -63,13 +64,23 @@
             pointer-events: none;
         }
 
-
-
-
         .select::after {
             -webkit-transition: .25s all ease;
             -o-transition: .25s all ease;
             transition: .25s all ease;
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: #dbf0ff !important;
+        }
+
+        marquee {
+            font-size: 20px;
+        }
+
+        .lightgreen {
+            background-color: #c2ffc1 !important;
+            font-weight: bold;
         }
     </style>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.6/jqc-1.12.3/jszip-2.5.0/pdfmake-0.1.18/dt-1.10.12/af-2.1.2/b-1.2.2/b-colvis-1.2.2/b-html5-1.2.2/b-print-1.2.2/cr-1.3.2/fc-3.2.2/fh-3.1.2/kt-2.1.3/r-2.1.0/rr-1.1.2/sc-1.4.2/se-1.2.0/datatables.min.css" />
@@ -78,7 +89,7 @@
 </head>
 <body>
     <marquee width="100%" direction="left" height="100px">
-        <span>Develop by : jignesh Suthar</span> --- Please not here the page is automatically refresh after 1 minute.
+        <span>Develop by : Jigs suthar</span> --- Please note here the page is automatically refresh after 1 minute.
     </marquee>
     <br />
     <br />
@@ -131,7 +142,7 @@
 </body>
 </html>
 
-<script>
+<script type="text/javascript">
     var d = new Date();
     var month = d.getMonth() + 1;
     var day = d.getDate() + 1;
@@ -139,17 +150,15 @@
         CovidData($('#District').val());
         startTimer();
     });
-
+    $('#District').change(function (e) {
+        e.preventDefault();
+        CovidData($('#District').val());
+    });
     function startTimer() {
         timer = setInterval(function () {
             CovidData($('#District').val());
         }, 60000);
     }
-
-    $('#District').change(function (e) {
-        e.preventDefault();
-        CovidData($('#District').val());
-    });
     function CovidData(v) {
         $.ajax({
             type: "GET",
@@ -186,8 +195,30 @@
                                 }
                             }, "data": "min_age_limit"
                         },
-                        { "data": "available_capacity_dose1" },
-                        { "data": "available_capacity_dose2" },
+
+                        {
+                            "render": function (data, type, full, meta) {
+                                if (full.available_capacity_dose1 > 0) {
+                                    return '<lable class="lightgreen">' + full.available_capacity_dose1 + '</lable>';
+                                }
+                                else {
+                                    return full.available_capacity_dose1;
+                                }
+                            }, "data": "available_capacity_dose1"
+                        },
+
+                        //{ "data": "available_capacity_dose1" },
+                        {
+                            "render": function (data, type, full, meta) {
+                                if (full.available_capacity_dose2 > 0) {
+                                    return '<lable class="lightgreen">' + full.available_capacity_dose2 + '</lable>';
+                                }
+                                else {
+                                    return full.available_capacity_dose2;
+                                }
+                            }, "data": "available_capacity_dose2"
+                        },
+                        //{ "data": "available_capacity_dose2" },
                         { "data": "date" },
                         { "data": "fee_type" },
                         { "data": "fee" }
@@ -201,7 +232,12 @@
                         'colvis',
                         'pageLength'
                     ],
-
+                    rowCallback: function (row, data) {
+                        debugger;
+                        if (data.available_capacity_dose1 > 0 || data.available_capacity_dose2 > 0) {
+                            $(row).find('lable.lightgreen').closest('td').addClass('lightgreen');
+                        }
+                    }
                 });
             }
         });
